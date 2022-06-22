@@ -1,7 +1,0 @@
-/home/thomas/geant4/geant4.10.02.p03/PETLAr/build/CMakeFiles/PETLAr.dir
-/home/thomas/geant4/geant4.10.02.p03/PETLAr/build/CMakeFiles/edit_cache.dir
-/home/thomas/geant4/geant4.10.02.p03/PETLAr/build/CMakeFiles/rebuild_cache.dir
-/home/thomas/geant4/geant4.10.02.p03/PETLAr/build/CMakeFiles/list_install_components.dir
-/home/thomas/geant4/geant4.10.02.p03/PETLAr/build/CMakeFiles/install.dir
-/home/thomas/geant4/geant4.10.02.p03/PETLAr/build/CMakeFiles/install/local.dir
-/home/thomas/geant4/geant4.10.02.p03/PETLAr/build/CMakeFiles/install/strip.dir
