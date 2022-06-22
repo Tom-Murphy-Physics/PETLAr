@@ -1,0 +1,41 @@
+#include <cmath>
+
+void plot_qpp()
+{
+  // SCINTILLATION DATA
+  TCanvas *c1 = new TCanvas();
+
+  TGraphErrors *gr = new TGraphErrors();
+
+  gr->SetMarkerStyle(4);
+  gr->SetMarkerSize(0.2);
+  
+  fstream file1;
+  file1.open("../A_data_txt/numeion_data.txt", ios::in);
+  fstream file2;
+  file2.open("../A_data_txt/enum_data.txt", ios::in);
+  
+  double ixs,iys,iexs,ieys;
+  double exs,eys,eexs,eeys;
+  
+  int ns = 0;
+  
+  while(1)
+    {
+      file1 >> ixs >> iys >> iexs >> ieys;
+      file2 >> exs >> eys >> eexs >> eeys;
+      
+      ns = gr->GetN();
+
+      double Recombination_factor = 0.7455; //Birks Model
+      
+      gr->SetPoint(ns, ixs, iys/eys*Recombination_factor);
+      gr->SetPointError(ns, eexs, sqrt(eeys*eeys+ieys*ieys)*Recombination_factor);
+
+      if(file1.eof()) break;
+    }
+  gr->GetYaxis()->SetRangeUser(0,2000);
+  gr->Draw("AP");
+  gr->SetTitle("Charge on Pixel Plane Per Scattering process;Radius of PMT (in);Number of Ionization Electrons per Scattering Process");
+  c1->SaveAs("qpp_plt.png");
+}

@@ -1,0 +1,158 @@
+#include <string>
+
+void plot_attach()
+{
+  // SCINTILLATION DATA
+  TCanvas *c1 = new TCanvas();
+  TMultiGraph *mg = new TMultiGraph();
+
+  int i = 1;
+  for (float lambda = 3.0; lambda <=3.0; lambda = lambda + 3)
+  {
+    TGraphErrors *gr1 = new TGraphErrors();
+    TGraphErrors *gr2 = new TGraphErrors();
+    TGraphErrors *gr3 = new TGraphErrors();
+    TGraphErrors *gr4 = new TGraphErrors();
+    
+    string label = "lambda = " + std::to_string(roundf(lambda*100)/100) + " n = 1";
+    
+    gr1->SetMarkerStyle(8);
+    gr1->SetMarkerColor(i);
+    gr1->SetTitle(label.c_str());
+    gr1->SetMarkerSize(1);
+
+    label = "lambda = " + std::to_string(roundf(lambda*100)/100) + " n = 2";
+    
+    gr2->SetMarkerStyle(23);
+    gr2->SetMarkerColor(i);
+    gr2->SetTitle(label.c_str());
+    gr2->SetMarkerSize(1);
+
+    label = "lambda = " + std::to_string(roundf(lambda*100)/100) + " n = 3";
+    
+    gr3->SetMarkerStyle(21);
+    gr3->SetMarkerColor(i);
+    gr3->SetTitle(label.c_str());
+    gr3->SetMarkerSize(1);
+
+    label = "lambda = " + std::to_string(roundf(lambda*100)/100) + " n = 4";
+    
+    gr4->SetMarkerStyle(33);
+    gr4->SetMarkerColor(i);
+    gr4->SetTitle(label.c_str());
+    gr4->SetMarkerSize(1);
+    
+    fstream file1;
+    file1.open("numeion1_data.txt", ios::in);
+
+    fstream filepen1;
+    filepen1.open("pen_depth1_data.txt", ios::in);
+
+    double xs1,ys1,exs1,eys1;
+    double xsd1,ysd1,exsd1,eysd1;
+    //////////////////////////////////////////////////
+    fstream file2;
+    file2.open("numeion2_data.txt", ios::in);
+
+    fstream filepen2;
+    filepen2.open("pen_depth2_data.txt", ios::in);
+
+    double xs2,ys2,exs2,eys2;
+    double xsd2,ysd2,exsd2,eysd2;
+    //////////////////////////////////////////////////
+    fstream file3;
+    file3.open("numeion3_data.txt", ios::in);
+
+    fstream filepen3;
+    filepen3.open("pen_depth3_data.txt", ios::in);
+
+    double xs3,ys3,exs3,eys3;
+    double xsd3,ysd3,exsd3,eysd3;
+    //////////////////////////////////////////////////
+    fstream file4;
+    file4.open("numeion4_data.txt", ios::in);
+
+    fstream filepen4;
+    filepen4.open("pen_depth4_data.txt", ios::in);
+
+    double xs4,ys4,exs4,eys4;
+    double xsd4,ysd4,exsd4,eysd4;
+    
+    int ns1 = 0;
+    int ns2 = 0;
+    int ns3 = 0;
+    int ns4 = 0;
+  
+    while(1)
+      {
+	file1 >> xs1 >> ys1 >> exs1 >> eys1;
+	filepen1 >> xsd1 >> ysd1 >> exsd1 >> eysd1;
+      
+	ns1 = gr1->GetN();
+
+	double Recombination_factor = 0.7455; //Birks Model
+      
+	//cout<<ys1*exp(-lambda*(xs1*25.4-ysd1)/1000)<<endl;
+      
+	gr1->SetPoint(ns1, xs1, ys1*Recombination_factor*exp(-lambda*(xs1*288.036-ysd1)/1000));
+	gr1->SetPointError(ns1, exs1, eys1*Recombination_factor*exp(-lambda*(xs1*288.036-ysd1)/1000));
+
+	///////////////////////////////////
+
+	file2 >> xs2 >> ys2 >> exs2 >> eys2;
+	filepen2 >> xsd2 >> ysd2 >> exsd2 >> eysd2;
+
+	ns2 = gr2->GetN();
+      
+	gr2->SetPoint(ns2, xs2, ys2*Recombination_factor*exp(-lambda*(xs2*288.036-ysd2)/1000));
+	gr2->SetPointError(ns2, exs2, eys2*Recombination_factor*exp(-lambda*(xs2*288.036-ysd2)/1000));
+
+	////////////////////////////////////
+	
+	file3 >> xs3 >> ys3 >> exs3 >> eys3;
+	filepen3 >> xsd3 >> ysd3 >> exsd3 >> eysd3;
+
+	ns3 = gr3->GetN();
+      
+	gr3->SetPoint(ns3, xs3, ys3*Recombination_factor*exp(-lambda*(xs3*288.036-ysd3)/1000));
+	gr3->SetPointError(ns3, exs3, eys3*Recombination_factor*exp(-lambda*(xs3*288.036-ysd3)/1000));	
+	if(file1.eof()) break;
+
+	////////////////////////////////////
+	
+	file4 >> xs4 >> ys4 >> exs4 >> eys4;
+	filepen4 >> xsd4 >> ysd4 >> exsd4 >> eysd4;
+
+	ns4 = gr4->GetN();
+      
+	gr4->SetPoint(ns4, xs4, ys4*Recombination_factor*exp(-lambda*(xs4*288.036-ysd4)/1000));
+	gr4->SetPointError(ns4, exs4, eys4*Recombination_factor*exp(-lambda*(xs4*288.036-ysd4)/1000));	
+	if(file1.eof()) break;
+      }
+
+    gr1->GetYaxis()->SetRangeUser(0,500*10);
+    gr1->Draw("AP");
+    mg->Add(gr1);
+    
+    gr2->GetYaxis()->SetRangeUser(0,500*10);
+    gr2->Draw("AP");
+    mg->Add(gr2);
+    
+    gr3->GetYaxis()->SetRangeUser(0,500*10);
+    gr3->Draw("AP");
+    mg->Add(gr3);
+
+    gr4->GetYaxis()->SetRangeUser(0,500*10);
+    gr4->Draw("AP");
+    mg->Add(gr4);
+    
+    i++;
+  }
+  mg->Draw("AP");
+  mg->SetTitle("Charge at Pixels per Event;Size Multiplier of Detector;Number of Ionization Electrons at Pixels");
+  mg->GetYaxis()->SetRangeUser(0,500);
+  mg->GetXaxis()->SetRangeUser(5,15.5);
+  c1->BuildLegend();
+}
+
+

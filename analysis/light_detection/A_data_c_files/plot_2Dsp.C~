@@ -1,0 +1,35 @@
+void plot_2Dsp()
+{
+  // SCINTILLATION DATA
+  TCanvas *c1 = new TCanvas();
+
+  TH2F *gr = new TH2F("gr", "SP", 11, 10, 65, 20, 0, 1000); 
+
+  gr->SetStats(0);
+  
+  fstream file;
+  file.open("../A_data_txt/2Dsp_data.txt", ios::in);
+
+  double xs,ys;
+
+  int ns = 0;
+  
+  while(1)
+    {
+      file >> xs >> ys;
+
+      //ns = gr->GetN();
+
+      double Recombination_factor = 1;
+      double Scaling_factor = 1;
+      
+      gr->Fill(xs,ys);
+      //gr->SetPointError(ns, exs, eys);
+
+      if(file.eof()) break;
+    }
+  //gr->GetXaxis()->SetRangeUser(4,23);
+  gr->Draw("colz");
+  gr->SetTitle("Number of Scintillation Photons;PMT radius (mm);Number of Photons");
+  c1->SaveAs("2Dsp_plt.png");
+}

@@ -1,0 +1,2 @@
+/calor/setWorldZ 150 mm
+/control/loop scanr.mac size 32 104 4

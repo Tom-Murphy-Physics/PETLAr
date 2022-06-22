@@ -1,0 +1,61 @@
+#include <string>
+
+void plot_attach()
+{
+  // SCINTILLATION DATA
+  TCanvas *c1 = new TCanvas();
+  TMultiGraph *mg = new TMultiGraph();
+
+  int i = 1;
+  for (double lambda = 0.2; lambda <=3.0; lambda = lambda + 0.4)
+  {
+    TGraphErrors *gr = new TGraphErrors();
+
+    string label = "lambda = " + std::to_string(lambda);
+    
+    gr->SetMarkerStyle(8);
+    gr->SetMarkerColor(i);
+    gr->SetTitle(label.c_str());
+    gr->SetMarkerSize(1);
+  
+    fstream file;
+    file.open("../Z_data_txt/numeion_data.txt", ios::in);
+
+    fstream filepen;
+    filepen.open("../Z_data_txt/pen_depth.txt", ios::in);
+
+    double xs,ys,exs,eys;
+    double xsd,ysd,exsd,eysd;
+  
+    int ns = 0;
+  
+    while(1)
+      {
+	file >> xs >> ys >> exs >> eys;
+	filepen >> xsd >> ysd >> exsd >> eysd;
+      
+	ns = gr->GetN();
+
+	double Recombination_factor = 0.7455; //Birks Model
+      
+	if(lambda == 0.2){
+	  //cout<<ysd<<"\t"<<xs<<endl;
+	}
+	gr->SetPoint(ns, xs, ys*Recombination_factor*exp(-lambda*(xs-ysd)/1000));
+	gr->SetPointError(ns, exs, eys*Recombination_factor*exp(-lambda*(xs-ysd)/1000));
+
+	if(file.eof()) break;
+      }
+    gr->GetYaxis()->SetRangeUser(0,500*10);
+    gr->Draw("AP");
+    mg->Add(gr);
+    i++;
+  }
+  mg->Draw("AP");
+  mg->SetTitle("Charge at Pixel Plane;Drift Length (mm);Number of Electrons Detected");
+   mg->GetYaxis()->SetRangeUser(0,7500);
+  c1->BuildLegend();
+  c1->SaveAs("Attachment_plt.png");
+}
+
+

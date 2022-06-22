@@ -1,0 +1,130 @@
+#include <string>
+#include <cmath>
+
+void plot_track_width()
+{
+  double noise = 100;
+  double Dt = 0.001695;
+  double V = 2175;
+  double lambda = 0.0;
+  // SCINTILLATION DATA
+  TCanvas *c1 = new TCanvas();
+  TMultiGraph *mg = new TMultiGraph();
+
+  
+  TMultiGraph *mg2 = new TMultiGraph();
+  
+  TF1 *f1 = new TF1("Diffusion", "[0]+[1]*sqrt(x*25.4-x*[2])");
+  //f1->SetParameter(1,4*sqrt(2*Dt/V));
+  
+  f1->SetParLimits(0,0.1,1);
+  f1->SetParLimits(1,sqrt(2*Dt/V),5*sqrt(2*Dt/V));
+  f1->SetParLimits(2,0,70);
+  
+  int i = 1;
+  for (double xp = 0.001; xp <=0.005; xp = xp + 0.001)
+  {
+    TGraphErrors *gr = new TGraphErrors();
+
+    string label = "xp = " + std::to_string(int(xp*1000)) + " mm";
+    
+    gr->SetMarkerStyle(8);
+    gr->SetMarkerColor(i);
+    gr->SetTitle(label.c_str());
+    gr->SetMarkerSize(1);
+
+    ////////////////////////////////////////////
+    
+    TGraphErrors *gr2 = new TGraphErrors();
+
+    string label2 = "xp = " + std::to_string(int(xp*1000)) + " mm";
+    
+    gr2->SetMarkerStyle(8);
+    gr2->SetMarkerColor(i);
+    gr2->SetTitle(label2.c_str());
+    gr2->SetMarkerSize(1);
+  
+    //fstream file;
+    //file.open("cloud_data.txt", ios::in);
+
+    fstream filepen;
+    filepen.open("pen_depth1_data.txt", ios::in);
+
+    fstream numeionfile;
+    numeionfile.open("numeion1_data.txt", ios::in);
+
+    //fstream enumfile;
+    //enumfile.open("enum4_data.txt", ios::in);
+    
+    //double xs,ys,exs,eys;
+    double xsd,ysd,exsd,eysd;
+    double xsn, N0,exsn,eysn;
+    //double enumx, enumy, enumex, enumey;
+  
+    int nsd = 0;
+  
+    while(1)
+      {
+	//file >> xs >> ys >> exs >> eys;
+	filepen >> xsd >> ysd >> exsd >> eysd;
+	numeionfile >> xsn >> N0 >> exsn >> eysn;
+	//enumfile >> enumx >> enumy >> enumex >> enumey;
+	nsd = gr->GetN();
+
+	double Recombination_factor = 0.7455; //Birks Model
+
+	double sigma = sqrt((4*Dt*3.141592653589*(xsd*288.036-ysd)/1000)/V);
+	//cout<<eysd<<endl;
+	double xc = (-3*pow(xp,2)+sqrt(9*pow(xp,4)-12*xp*(pow(xp,3)+3*pow(4*Dt*(xsd*288.036-ysd)/(1000*V),1.5))*(2*noise*sigma/(N0*exp(-lambda*(xsd*288.036-ysd)/1000))-2*xp/sigma)))/(3*xp);
+	//cout<<xc<<endl;
+	gr->SetPoint(nsd, xsd, 1000*xc);
+	gr->SetPointError(nsd, exsd, xc/xp/6*sqrt(36*xp*(2*noise*sqrt(3.141592653589)*sqrt(pow(eysn/N0,2)+pow(4*Dt,2)*pow(2*eysd/(xsd*288.036-ysd),2))-2*xp*Dt*4*eysd/(xsd*288.036-ysd))));
+	//cout<<xc/xp/6*sqrt(36*xp*(2*noise*sqrt(3.141592653589)*sqrt(pow(eysn/N0,2)+pow(4*Dt,2)*pow(2*eysd/(xsd*25.4-ysd),2))-2*xp*Dt*4*eysd/(xsd*25.4-ysd)))<<endl;
+
+	///////////////////////////////////////////////////
+
+	double xc_ = xc;
+	int number_of_pixels = 0;
+	while (xc_ > 0)
+	  {
+	   if (number_of_pixels == 0)
+	     {
+	      xc_ = xc_ - xp/2;
+	      number_of_pixels = number_of_pixels + 1;
+	     }
+	   else
+	     {
+	      xc_ = xc_ - xp;
+	      number_of_pixels = number_of_pixels + 2;
+	     }
+	  }
+	
+	gr2->SetPoint(nsd, xsd, number_of_pixels);
+	
+	if(filepen.eof()) break;
+      }
+    //gr->Fit(f1);
+    gr->GetYaxis()->SetRangeUser(0,100);
+    gr->Draw("AP");
+    mg->Add(gr);
+
+    gr2->Draw("AP");
+    mg2->Add(gr2);
+    i++;
+  }
+  //mg->Fit(f1);
+  mg->Draw("AP");
+  mg->SetTitle("Max Visible Track Length per pixel size at Pixel Plane;Size multipler of Detector;Length of Track (mm)");
+  mg->GetYaxis()->SetRangeUser(0,20);
+  c1->BuildLegend();
+  c1->SaveAs("Track_width_plt.png");
+
+  TCanvas *c2 = new TCanvas();
+  mg2->SetTitle("Number of Pixel hits; Size Multiplier of Detector; Number of Pixel hits");
+  c2->cd();
+  mg2->Draw("AP");
+  c2->BuildLegend();
+  c2->SaveAs("Pixel_Hits_plt.png");
+}
+
+

@@ -1,0 +1,43 @@
+file(REMOVE_RECURSE
+  "CMakeFiles/PETLAr.dir/PETLAr.cc.o"
+  "CMakeFiles/PETLAr.dir/PETLAr.cc.o.d"
+  "CMakeFiles/PETLAr.dir/src/ActionInitialization.cc.o"
+  "CMakeFiles/PETLAr.dir/src/ActionInitialization.cc.o.d"
+  "CMakeFiles/PETLAr.dir/src/Detector.cc.o"
+  "CMakeFiles/PETLAr.dir/src/Detector.cc.o.d"
+  "CMakeFiles/PETLAr.dir/src/DetectorConstruction.cc.o"
+  "CMakeFiles/PETLAr.dir/src/DetectorConstruction.cc.o.d"
+  "CMakeFiles/PETLAr.dir/src/DetectorMessenger.cc.o"
+  "CMakeFiles/PETLAr.dir/src/DetectorMessenger.cc.o.d"
+  "CMakeFiles/PETLAr.dir/src/ElectricFieldSetup.cc.o"
+  "CMakeFiles/PETLAr.dir/src/ElectricFieldSetup.cc.o.d"
+  "CMakeFiles/PETLAr.dir/src/EventAction.cc.o"
+  "CMakeFiles/PETLAr.dir/src/EventAction.cc.o.d"
+  "CMakeFiles/PETLAr.dir/src/FieldMessenger.cc.o"
+  "CMakeFiles/PETLAr.dir/src/FieldMessenger.cc.o.d"
+  "CMakeFiles/PETLAr.dir/src/PhysicsList.cc.o"
+  "CMakeFiles/PETLAr.dir/src/PhysicsList.cc.o.d"
+  "CMakeFiles/PETLAr.dir/src/PhysicsListMessenger.cc.o"
+  "CMakeFiles/PETLAr.dir/src/PhysicsListMessenger.cc.o.d"
+  "CMakeFiles/PETLAr.dir/src/PrimaryGeneratorAction.cc.o"
+  "CMakeFiles/PETLAr.dir/src/PrimaryGeneratorAction.cc.o.d"
+  "CMakeFiles/PETLAr.dir/src/PrimaryGeneratorMessenger.cc.o"
+  "CMakeFiles/PETLAr.dir/src/PrimaryGeneratorMessenger.cc.o.d"
+  "CMakeFiles/PETLAr.dir/src/RunAction.cc.o"
+  "CMakeFiles/PETLAr.dir/src/RunAction.cc.o.d"
+  "CMakeFiles/PETLAr.dir/src/RunMessenger.cc.o"
+  "CMakeFiles/PETLAr.dir/src/RunMessenger.cc.o.d"
+  "CMakeFiles/PETLAr.dir/src/StepCut.cc.o"
+  "CMakeFiles/PETLAr.dir/src/StepCut.cc.o.d"
+  "CMakeFiles/PETLAr.dir/src/SteppingAction.cc.o"
+  "CMakeFiles/PETLAr.dir/src/SteppingAction.cc.o.d"
+  "CMakeFiles/PETLAr.dir/src/SteppingVerbose.cc.o"
+  "CMakeFiles/PETLAr.dir/src/SteppingVerbose.cc.o.d"
+  "PETLAr"
+  "PETLAr.pdb"
+)
+
+# Per-language clean rules from dependency scanning.
+foreach(lang CXX)
+  include(CMakeFiles/PETLAr.dir/cmake_clean_${lang}.cmake OPTIONAL)
+endforeach()

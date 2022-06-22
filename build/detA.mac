@@ -1,0 +1,2 @@
+/calor/setWorldZ 150 mm
+/control/loop scanA.mac size 10 60 5

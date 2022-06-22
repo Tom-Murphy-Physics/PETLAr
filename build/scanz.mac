@@ -1,0 +1,3 @@
+/calor/setWorldZ {size} mm
+/run/reinitializeGeometry
+/run/beamOn 500

@@ -1,0 +1,76 @@
+#include <string>
+#include <cmath>
+
+void plot_cloud()
+{
+
+  double Dt = 1695.62;
+  double V = 2175000;
+  // SCINTILLATION DATA
+  TCanvas *c1 = new TCanvas();
+  TMultiGraph *mg = new TMultiGraph();
+  TF1 *f1 = new TF1("Diffusion", "[0]+[1]*sqrt(x)");
+  //f1->SetParameter(1,4*sqrt(2*Dt/V));
+  
+  //f1->SetParLimits(0,0.1,1);
+  f1->SetParLimits(1,0,5*sqrt(2*Dt/V));
+  f1->SetParLimits(0,0,1);
+  
+  //f1->SetParameters(0.1, 0.03);
+  int i = 1;
+  for (double lambda = 3.0; lambda <=3.0; lambda = lambda + 0.4)
+  {
+    TGraphErrors *gr = new TGraphErrors();
+
+    string label = "lambda = " + std::to_string(lambda);
+    
+    gr->SetMarkerStyle(8);
+    gr->SetMarkerColor(i);
+    gr->SetTitle(label.c_str());
+    gr->SetMarkerSize(1);
+  
+    fstream file;
+    file.open("../Z_data_txt/cloud_data.txt", ios::in);
+
+    fstream filepen;
+    filepen.open("../Z_data_txt/pen_depth.txt", ios::in);
+
+    double xs,ys,exs,eys;
+    double xsd,ysd,exsd,eysd;
+  
+    int ns = 0;
+  
+    while(1)
+      {
+	file >> xs >> ys >> exs >> eys;
+	filepen >> xsd >> ysd >> exsd >> eysd;
+      
+	ns = gr->GetN();
+
+	double Recombination_factor = 0.7455; //Birks Model
+	
+	if(lambda == 3){
+	  //cout<<ysd<<"\t"<<xs<<endl;
+	}
+	if (xsd>ysd){
+	gr->SetPoint(ns, xs, ys + 4*sqrt((2*Dt*(xsd-ysd))/V));
+	gr->SetPointError(ns, exs, eys+4*sqrt((2*Dt*(eysd))/V));
+	}
+	if(file.eof()) break;
+      }
+    gr->Fit(f1);
+    gr->GetYaxis()->SetRangeUser(0,500*10);
+    gr->Draw("AP");
+    mg->Add(gr);
+    i++;
+  }
+  //mg->Fit(f1);
+  mg->Draw("AP");
+  mg->SetTitle("Track Length at Pixel Plane (96CL);Drift Length (mm);Length of Track (mm)");
+  mg->GetYaxis()->SetRangeUser(0,6);
+  cout<<f1->GetChisquare()/f1->GetNDF()<<endl;
+  //c1->BuildLegend();
+  c1->SaveAs("Cloud_Size_plt.png");
+}
+
+
