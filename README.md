@@ -1,31 +1,37 @@
 # PETLAr
 
-(Positron Emission Tomography (PET) in Liquid Argon (LAr) Time Projection Chambers (TPCs)
+(Positron Emission Tomography (PET) in Liquid Argon (LAr) Time Projection Chambers (TPCs))
 
-##Running The Code
+## Running The Code
 
 This porject is meant to study the effects of replacing the scintillation material that is traditionally used in PET with a LArTPC.
 The code in this repository runs a simulation of the proposed detector. These simulations require GEANT4 and ROOT to run. 
 Once those dependencies are setup and this code is downloaded you will need to go into the directory called build.
 The next step is to run the command:
-"""
+'''
 cmake ..
-"""
+'''
 This will create the required cmake files. Now you will need to make the code. This can be done by running the command:
-"""
+'''
 make
-"""
+'''
 This should make an executable that will run the simulation. The simulation can be run by typing:
-"""
+'''
 ./PETLAr
-"""
+'''
 This should open GEANT4's GUI. To simulate an event type:
-"""
+'''
 /run/beamOn
-"""
+'''
 and press enter. After a moment this should create some lines that represent the different particles in the detector.
+Several shell scripts have been provided in the build directory. These files can be run using:
+'''
+source <file_name>
+'''
+For example the file "do_zit.sh" will iterate over various drift lengths and then do an analysis. 
+These analyses are fully automated at this point and can be used as a template should you want to create a new one.
 
-##The Physics
+## The Physics
 It is probably worth providing some context to the physics of the simulation.
 PET is a medical imaging technique. Whereby a "tracer" is injected into a patients blood stream to monitor biochemical reactions.
 These tracers are made of radionuclides attached to a molocule that is used in a certain reaction within the body.
@@ -38,7 +44,7 @@ These photons will each have 511 keV of energy and will usually propogate out of
 Traditionally segmented crystaline scintillation detectors are used. 
 However, this study looks at replacing those detectors with a LArTPC. 
 
-###The Detector 
+### The Detector 
 When this photon enters the detector medium it will collide with one of it's atoms. 
 When this happens an electron will be ejected via compton scattering and the incident photon will move off in some other direction.
 These scattering events will continue until either the incident photon deposits all its energy, or more likely it escapes the detector.
@@ -49,14 +55,14 @@ These photons can be more easily detected and are produced in quantities great e
 If however, an electrons is ionized, it will propogate some distance all the while interacting with the neighbooring atoms.
 This usually means it will be reabosrbed and not allowed to travel a meaningful distance.
 
-###LArTPCs
+### LArTPCs
 Unlike the traditional scintillation material, argon has no valance electrons.
 Consequently, it will not accept a free floating electron. So the electrons created by the interaction of photons within the detector are free to float around.
 So, what LArTPCs do is apply a large electric field to these electrons, and drift them to sophisticated electronics that can read out the signal. 
 What this study aims to do is use LArTPCs to gather both charge and light information from the detectors. 
 This could provide higher energy and spatial resolution of where the inital incident photon is in the detector. 
 
-###Reconstructing the image
+### Reconstructing the image
 The reason why this is important is because to actually create an image of the body, the two photons that are emitted back to back have to be detected. 
 Once they are detected, a line is drawn between them. A higher resolution means the thinner that line will be and the more accurate it is. 
 To determine where exactly this decay happened one just needs to look at the time when the light was detected. 
