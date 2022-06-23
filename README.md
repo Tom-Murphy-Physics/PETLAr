@@ -8,26 +8,26 @@ This porject is meant to study the effects of replacing the scintillation materi
 The code in this repository runs a simulation of the proposed detector. These simulations require GEANT4 and ROOT to run. 
 Once those dependencies are setup and this code is downloaded you will need to go into the directory called build.
 The next step is to run the command:
-'''
+```
 cmake ..
-'''
+```
 This will create the required cmake files. Now you will need to make the code. This can be done by running the command:
-'''
+```
 make
-'''
+```
 This should make an executable that will run the simulation. The simulation can be run by typing:
-'''
+```
 ./PETLAr
-'''
+```
 This should open GEANT4's GUI. To simulate an event type:
-'''
+```
 /run/beamOn
-'''
+```
 and press enter. After a moment this should create some lines that represent the different particles in the detector.
 Several shell scripts have been provided in the build directory. These files can be run using:
-'''
+```
 source <file_name>
-'''
+```
 For example the file "do_zit.sh" will iterate over various drift lengths and then do an analysis. 
 These analyses are fully automated at this point and can be used as a template should you want to create a new one.
 
